@@ -1,0 +1,4 @@
+#! /bin/bash
+g++ -g -o Cross_country ./Cross_country.cc
+echo "******************"
+read
