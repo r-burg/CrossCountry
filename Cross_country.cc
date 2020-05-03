@@ -33,6 +33,7 @@
 using namespace std;
 
 #define VINCENTY true
+#define HALVERSINE false
 
 #define VERSION 0.1
 
@@ -177,7 +178,6 @@ double leg(char *a1, char *a2, double &h, double &v)
 	Position x1, x2;
 
     // Open TP file.
-//    tpfile = fopen("./2016.dos", "r");
     tpfile = fopen("./TurnPoints.dat", "r");
     if (tpfile == NULL) { perror ("Error opening file"); return(-1); }
     else {
@@ -219,7 +219,6 @@ double leg(char *a1, char *a2, double &h, double &v)
     fclose(tpfile);
 
     tpfile = NULL;
-//    tpfile = fopen("./2016.dos", "r");
     tpfile = fopen("./TurnPoints.dat", "r");
     found = false;
     if (tpfile == NULL) { perror ("Error opening file"); return(-1); }
@@ -289,7 +288,9 @@ double leg(char *a1, char *a2, double &h, double &v)
     v = s / 1000.0;
 
     s = haversine(x1, x2);
+#if HALVERSINE
     printf("Haversine --> %0.3f km\n\n", s);
+#endif
     h = s;
 }
 
@@ -334,7 +335,10 @@ int main(int argc, char **argv)
 //            leg(a1, a2);
             strcpy(a1, a2);
         }
-        printf("Total distance (Haversine) = %0.3f; (Vincenty) = %0.3f", htotal, vtotal);
+#if HALVERSINE
+        printf("Total distance (Haversine) = %0.3f; ", htotal);
+#endif
+        printf("Total distance (Vincenty) = %0.3f", vtotal);
     } else if(argc == 3) {
         strncpy(a1, argv[1], 5);
         strncpy(a2, argv[2], 5);
